@@ -13,6 +13,9 @@ namespace LeoPortal2.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        // Leo Start
+            Database.EnsureCreated();
+        //Leo End
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

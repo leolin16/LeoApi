@@ -24,6 +24,9 @@ namespace LeoPortal2.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+    //Leo Start
+        private ApplicationUser _appUser;
+    //Leo End
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -48,6 +51,15 @@ namespace LeoPortal2.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
+
+        // Leo start
+            if (User.Identity.IsAuthenticated)
+            // if (SignInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Trips", "App");
+            }
+        // Leo End
+
             return View();
         }
 
@@ -61,26 +73,55 @@ namespace LeoPortal2.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+
+            // Leo Start
+                _appUser = await _userManager.FindByNameAsync(model.Email);
+                if (_appUser == null)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    _appUser = await _userManager.FindByEmailAsync(model.Email);
                 }
-                if (result.RequiresTwoFactor)
+
+                if (_appUser != null)
                 {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
+            // Leo End
+                    var result = await _signInManager.PasswordSignInAsync(_appUser.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                    //Leo Start
+                        if (string.IsNullOrWhiteSpace(returnUrl))
+                        {
+                            return RedirectToAction("Trips", "App");
+                        }
+                        else
+                        {
+                            return RedirectToLocal(returnUrl);
+                        }
+                    //Leo End
+                        // return RedirectToLocal(returnUrl);
+                    }
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToAction(nameof(Lockout));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
+            // Leo Start
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "User Indentity is not Correct.(Should be changed to hide info for security concerns)");
                     return View(model);
                 }
+            // Leo End
             }
 
             // If we got this far, something failed, redisplay form
@@ -220,7 +261,7 @@ namespace LeoPortal2.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -268,6 +309,9 @@ namespace LeoPortal2.Controllers
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
+            // Leo Start
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+            // Leo End
                 return RedirectToAction(nameof(Login));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -283,6 +327,14 @@ namespace LeoPortal2.Controllers
                 _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
                 return RedirectToLocal(returnUrl);
             }
+
+        // Leo Start - revive once two factor login is OK
+            // if (result.RequiresTwoFactor)
+            // {
+            //     return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
+            // }
+        // Leo ENd
+
             if (result.IsLockedOut)
             {
                 return RedirectToAction(nameof(Lockout));

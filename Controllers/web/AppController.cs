@@ -1,80 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+// Leo Added
 using LeoPortal2.Models;
 using LeoPortal2.Models.Interfaces;
-using Microsoft.Extensions.Configuration;
-using LeoPortal2.Services;
-using Microsoft.Extensions.Logging;
 using LeoPortal2.Models.PageViewModels;
+using LeoPortal2.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace LeoPortal2.Controllers
+namespace LeoPortal2.Controllers.web
 {
-    public class HomeController : Controller
+    public class AppController : Controller
     {
-    // Leo Start
-        private readonly IViewModelService viewModelService;
-        private IWorldRepository _repository;
-        private ILogger<HomeController> _logger;
-        private IConfiguration _config;
-        private IMailService _mailService;
         private CommonServiceResult Result;
-        public HomeController(IViewModelService viewModelService, IWorldRepository repository, ILogger<HomeController> logger, IMailService mailService, IConfiguration config)
+        private IMailService _mailService;
+        private IConfiguration _config;
+
+        //use repository instead of context
+        //private WorldContext _context;
+
+        private IWorldRepository _repository;
+        private ILogger<AppController> _logger;
+
+        ////private IEnumerable<Trip> trips;
+
+        //public AppController(IMailService service, IWorldRepository repository)
+        public AppController(IMailService mailService, IConfiguration config, IWorldRepository repository, ILogger<AppController> logger)
         {
-            this.viewModelService = viewModelService;
-            _repository = repository;
-            _logger = logger;
             _mailService = mailService;
             _config = config;
-        }
-        // GET: /<controller>/
-        public IActionResult Dashboard()
-        {
-            ViewBag.Title = "Fish tank dashboard app";
-            return View(viewModelService.GetDashboardViewModel());
-        }
 
-        public IActionResult Feed(int foodAmount)
-        {
-            var model = viewModelService.GetDashboardViewModel();
-            model.LastFed = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}. Amount: {foodAmount}";
-            return View("Dashboard", model);
+            //use repository instead of context
+            //_context = context;
+
+            //instead of using repository directly, I've implemented it by calling API
+            _repository = repository;
+            _logger = logger;
         }
-    // Leo End
         public IActionResult Index()
         {
-        // Leo Start
             try
             {
                 var data = _repository.GetAllTrips();
                 return View(data);
+                //return View();
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Failed to get Trips in Index page: {ex.Message}");
                 return Redirect("/Error");
             }
-        // Leo End
-            //return View();
         }
 
+        [Authorize]
+        public IActionResult Trips()
+        {
+            //var trips = _repository.GetAllTrips();
+            return View(/*trips*/);
+        }
+        [Authorize]
+        public IActionResult Favlinks()
+        {
+            return View();
+        }
+        public IActionResult Cashflows()
+        {
+            return View();
+        }
+        public IActionResult Computers()
+        {
+            return View();
+        }
+        public IActionResult Codesnippets()
+        {
+            return View();
+        }
         public IActionResult About()
         {
-            ViewData["Message"] = "Well, When do you plan to marry me, VV?";
-
             return View();
         }
-
+        public IActionResult Results()
+        {
+            return View();
+        }
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Please enter your contact Info to contact Leo Lin.";
-
+            //throw new InvalidOperationException("Bad things happen to good developers");
             return View();
         }
-    // Leo Start
         [HttpPost]
         public async Task<IActionResult> Contact(ContactViewModel model)
         {
@@ -102,11 +119,6 @@ namespace LeoPortal2.Controllers
 
             return View();
         }
-    // Leo End
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
+
 }

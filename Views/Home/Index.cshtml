@@ -1,4 +1,7 @@
-﻿@{
+﻿<!-- Leo Start -->
+@model IEnumerable<LeoPortal2.Models.Trip>
+<!-- Leo End -->
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -106,3 +109,22 @@
         </ul>
     </div>
 </div>
+<!-- Leo Start -->
+<div class="row">
+    <div class="col-md-6">
+        <h1 class="page-header">Welcome To the Leo's Playground</h1>
+        <p>This app will allow you to plan for world trips</p>
+        <a asp-controller="App" asp-action="Trips" class="btn btn-lg btn-success">View My Trips</a>
+    </div>
+    <div class="col-md-6">
+        <h1 class="page-header">The Trips Demo</h1>
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>@item.Name : @item.Created</li>
+
+            }
+        </ul>
+    </div>
+</div>
+<!-- Leo End -->

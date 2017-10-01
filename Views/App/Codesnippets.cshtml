@@ -1,0 +1,75 @@
+<!-- Leo Added -->
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = User.Identity.Name + "'s Code Snippets";
+}
+@section Styles {
+    <link rel="stylesheet" href="/lib/highlight/src/styles/atelier-plateau-dark.css">
+}
+@section Scripts {
+    <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/lib/angular-route/angular-route.min.js"></script>
+    <script src="~/js/highlight/highlight.pack.js"></script>
+    <script>
+        $(document).ready(function () {
+            //$('pre code').each(function (i, block) {
+            //    hljs.highlightBlock(block);
+            //});
+            hljs.initHighlighting();
+            //$forCodestyle.attr("class", "hljs " + $forHLObject.language);
+            //var $forHighlight = $("#testHighlight1");
+            //$forHighlight.html("<p>This is</p>");
+            //alert($forHLObject.value);
+        });
+    </script>
+    <environment names="Development">
+        @*<script src="~/js/app-favlinks.js"></script>
+            <script src="~/js/favlinksController.js"></script>
+            <script src="~/js/simpleControls.js"></script>
+            <script src="~/js/favlinkEditorController.js"></script>
+            <script src="~/js/linkEditorController.js"></script>*@
+    </environment>
+    <environment names="Staging,Production">
+        @*<script src="~/lib/_app/app-favlinks.js"></script>
+            <script src="~/lib/_app/favlinksController.js"></script>
+            <script src="~/lib/_app/simpleControls.js"></script>
+            <script src="~/lib/_app/favlinkEditorController.js"></script>
+            <script src="~/lib/_app/linkEditorController.js"></script>*@
+    </environment>
+}
+<div id="rowContainer" class="row" @*ng-app="app-codesnippets"*@ >
+    <div class="col-md-2">
+        <pre><code class="java">
+            int abc = 123;
+        </code></pre>
+    </div>
+    <div class="col-md-2">
+        <pre><code class="cs">
+            int abc = 123;
+        </code></pre>
+    </div>
+    <div class="col-md-2">
+        <pre><code class="vb.net">
+            int abc = 123;
+        </code></pre>
+    </div>
+    <div class="col-md-2">
+        <pre><code class="php">
+            int abc = 123;
+        </code></pre>
+    </div>
+    <div class="col-md-2">
+        <pre><code class="asp">
+            int abc = 123;
+        </code></pre>
+    </div>
+    <div class="col-md-2">
+        <pre><code class="jsp">
+            int abc = 123;
+        </code></pre>
+    </div>
+    @*<div id="ngContainer" ng-view></div>*@
+
+</div>

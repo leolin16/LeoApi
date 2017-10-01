@@ -8,6 +8,13 @@ namespace LeoPortal2.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+    // Leo Start
+        [Required]
+        [StringLength(16, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+        [Display(Name = "User Name")]
+        public string Username { get; set; }
+    // Leo End
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
