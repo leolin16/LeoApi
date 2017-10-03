@@ -1,0 +1,318 @@
+﻿<div>
+    <a href="#/" class="btn btn-sm btn-link"><i class="fa fa-angle-left"></i> Back</a>
+</div>
+<div class="inputPage col-md-3">
+    <h2>{{vm.cashflowName}}</h2>
+    <wait-cursor display-when="vm.isBusy"></wait-cursor>
+    <div class="alert alert-danger" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
+    <div class="alert alert-success" ng-show="vm.successMessage">{{vm.successMessage}}</div>
+
+    <form id="cashitemInputForm" novalidate name="newCashitemForm" ng-submit="vm.addCashitem()">
+        <div class="form-group has-feedback" ng-class="[
+		{'has-error':newCashitemForm.transactionDate.$invalid},
+		{'has-success':newCashitemForm.transactionDate.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="transactionDate"><i ng-class="{'fa fa':newCashitemForm.transactionDate.$invalid}"></i>T Date</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.transactionDate.$error.required">Transaction Date is required.</span>
+            </div>
+            <div class='input-group date' id='datetimepicker1'>
+                <input type="datetime" class="form-control" date-format="yyyy-mm-dd" id="transactionDate" name="transactionDate" ng-model="vm.newCashitem.transactionDate" required />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.transactionDate.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.transactionDate.$invalid"></span>
+            </div>
+            <!--<span class="glyphicon glyphicon-ok-sign text-success form-control-feedback" aria-hidden="true"
+                  ng-show="newCashitemForm.transactionDate.$valid"></span>-->
+        </div>
+        <div class="form-group has-feedback" ng-class="[
+		{'has-error':newCashitemForm.flowDirection.$invalid},
+		{'has-success':newCashitemForm.flowDirection.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="flowDirection"><i ng-class="{'fa fa':newCashitemForm.flowDirection.$invalid}"></i>Flow I/O</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.flowDirection.$error.required">Flow Direction is required.</span>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.flowDirection.$error.minlength">Flow Direction must be at least two characters.</span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.flowDirection.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.flowDirection.$invalid"></span>
+            </div>
+            <select class="form-control" id="flowDirection" name="flowDirection" ng-model="vm.newCashitem.flowDirection" ng-options="direction.value as direction.value for direction in vm.directions" required ng-minlength="2"></select>
+        </div>
+        <div class="form-group has-feedback" ng-class="[
+	    {'has-error':newCashitemForm.fromParty.$invalid},
+	    {'has-success':newCashitemForm.fromParty.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="fromParty"><i ng-class="{'fa fa':newCashitemForm.fromParty.$invalid}"></i>From</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.fromParty.$error.minlength">Flow-out Party must be at least two characters.</span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.fromParty.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.fromParty.$invalid"></span>
+            </div>
+            <input type="text" class="form-control" id="fromParty" name="fromParty" ng-model="vm.newCashitem.fromParty" ng-minlength="2" />
+        </div>
+        <div class="form-group has-feedback" ng-class="[
+	    {'has-error':newCashitemForm.toParty.$invalid},
+	    {'has-success':newCashitemForm.toParty.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="toParty"><i ng-class="{'fa fa':newCashitemForm.toParty.$invalid}"></i>To</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.toParty.$error.minlength">Flow-in Party must be at least two characters.</span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.toParty.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.toParty.$invalid"></span>
+            </div>
+            <input type="text" class="form-control" id="toParty" name="toParty" ng-model="vm.newCashitem.toParty" ng-minlength="2" />
+        </div>
+        <div class="form-group has-feedback" ng-class="[
+	    {'has-error':newCashitemForm.moneyAmount.$invalid},
+	    {'has-success':newCashitemForm.moneyAmount.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="moneyAmount"><i ng-class="{'fa fa':newCashitemForm.moneyAmount.$invalid}"></i>Amount</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.moneyAmount.$error.required">Money Amount is required.</span>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.moneyAmount.$error.minlength">Money Amount must be at least two digits.</span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.moneyAmount.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.moneyAmount.$invalid"></span>
+            </div>
+            <input type="number" class="form-control" id="moneyAmount" name="moneyAmount" min="0" step="0.01" ng-model="vm.newCashitem.moneyAmount" required ng-minlength="2" />
+        </div>
+        <div class="form-group has-feedback" ng-class="[
+	    {'has-error':newCashitemForm.moneyUnit.$invalid},
+	    {'has-success':newCashitemForm.moneyUnit.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="moneyUnit"><i ng-class="{'fa fa':newCashitemForm.moneyUnit.$invalid}"></i>Unit</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.moneyUnit.$error.required">Money Unit is required.</span>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.moneyUnit.$error.minlength">Money Unit must be at least one character.</span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.moneyUnit.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.moneyUnit.$invalid"></span>
+            </div>
+            <select class="form-control" id="moneyUnit" name="moneyUnit" ng-model="vm.newCashitem.moneyUnit" ng-options="unit.value as unit.value for unit in vm.units" required ng-minlength="1">
+                <!--<option>元</option>
+                <option>￥（円）</option>
+                <option>$(American Dollar)</option>-->
+            </select>
+        </div>
+        <div class="form-group has-feedback" ng-class="[
+	    {'has-error':newCashitemForm.moneyDescription.$invalid},
+	    {'has-success':newCashitemForm.moneyDescription.$valid}]">
+            <div class="row">
+                <label class="col-md-3 control-label" for="moneyDescription"><i ng-class="{'fa fa':newCashitemForm.moneyDescription.$invalid}"></i>What's For?</label>
+                <span class="col-md-9 text-warning" ng-show="newCashitemForm.moneyDescription.$error.minlength">Money Description must be at least two digits.</span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.moneyDescription.$valid"></span>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true" ng-show="newCashitemForm.moneyDescription.$invalid"></span>
+            </div>
+            <input type="text" class="form-control" id="moneyDescription" name="moneyDescription" ng-model="vm.newCashitem.moneyDescription" ng-minlength="2" />
+        </div>
+        <div class="form-group">
+            <input type="button" name="cashitemSubmit" id="modifyCashitem" class="btn btn-danger" value="Modify with {{vm.newCashitem.id}}th item" ng-click="vm.editCashitem()" ng-disabled="newCashitemForm.$invalid" />
+            <input type="submit" name="cashitemSubmit" id="addCashitem" class="btn btn-success col-md-offset-1" value="Add to {{vm.cashflowName}}" ng-disabled="newCashitemForm.$invalid" />
+        </div>
+    </form>
+    <div class="row">
+        <div id="filterPlace" class="form-group col-xs-3 col-xs-offset-1">
+            <label for="filterField">Search:</label>
+            <input class="form-control" id="filterField" ng-model="vm.query">
+        </div>
+        <div id="orderPlace" class="form-group col-xs-3">
+            <label for="orderField">Sort by:</label>
+            <select class="form-control" id="orderField" ng-model="vm.order">
+                <option value="transactionDate">Date</option>
+                <option value="flowDirection">Input/Output</option>
+                <option value="moneyAmount">Amount</option>
+                <option value="moneyUnit">Unit</option>
+            </select>
+        </div>
+        <div id="updownPlace" class="form-group col-xs-3">
+            <label for="updownField">Ascend/Descend:</label>
+            <input type="checkbox" class="form-control" id="updownField" ng-model="vm.ascdesc" />
+        </div>
+    </div>
+    <div id="lockedDiv">
+        <table class="table table-responsive table-striped">
+            <tr id="fixedHeaderTr">
+                <th>Date</th>
+                <th>i/o</th>
+                <th>Amount</th>
+                <th>Delete</th>
+            </tr>
+            <tr class="formattedFooterTr" ng-repeat="cashitem in vm.cashitems | filter:vm.query | orderBy:vm.order:vm.ascdesc" ng-switch="cashitem.flowDirection">
+                <td><h5>{{cashitem.transactionDate | date:'yyyy-MM-dd'}} <!--{{cashitem.transactionDate | date:'mediumTime'}}--></h5></td>
+                <td><h5>{{cashitem.flowDirection}}</h5></td>
+                <td ng-switch-when="Out"><span class="flow-out btn btn-link" ng-click="vm.showCashitem(cashitem.id)"><i class="fa fa-link"></i>{{cashitem.moneyAmount}} {{cashitem.moneyUnit}}</span></td>
+                <td ng-switch-when="In"><span class="flow-in btn btn-link" ng-click="vm.showCashitem(cashitem.id)"><i class="fa fa-link"></i>{{cashitem.moneyAmount}} {{cashitem.moneyUnit}}</span></td>
+                <td><button class="btn btn-justified btn-warning" ng-click="vm.delCashitem(cashitem.id)">Del</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="sidePage" class="col-md-9">
+
+    <h2>Your cashflow overview for <span class="pink">{{vm.cashflowName}}</span>: <i class="text-warning fa fa-apple"></i>  <span class="text-success fa fa-arrow-circle-down">{{vm.currentCashitem.transactionDate}}</span></h2>
+    <div class="row">
+        <div class="col-md-12 fa fa-border fa-2x" id="framePage">
+            <!--<div class="row">-->
+            <section>current cash item's description: {{vm.currentCashitem.description}}</section>
+            <section>
+                <span><i class="fa fa-money"></i><span class="golden">{{vm.totalBalance | currency:"￥"}}</span>&nbsp;/{{vm.targetAmount | currency:"￥"}}</span>
+            </section>
+            <section>
+                <progress class="col-md-7" ng-value="vm.totalBalance" min="0" max="{{vm.targetAmount}}"></progress>
+                <div>
+                    <input class="form-control" type="number" id="targetAmount" name="targetAmount" min="0" step="1000" ng-model="vm.targetAmount" />
+                </div>
+            </section>
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--<video class="col-md-11" autoplay loop controls id="myVideo">
+                <source src="/videos/HE-Sergei Rachmaninov Sonata For Cello And Piano,OP19(Andante) 现场版--音悦Tai.mp4" type="video/mp4">
+            </video>-->
+        </div>
+
+        <!--</div>-->
+    </div>
+    <!--<video autoplay loop controls id="myVideo">
+        <source src="/videos/HE-Sergei Rachmaninov Sonata For Cello And Piano,OP19(Andante) 现场版--音悦Tai.mp4" type="video/mp4">
+    </video>-->
+    <!--<iframe src="https://www.bing.com/" frameborder="0" id="myVideo">
+
+    </iframe>-->
+    <div class="row">
+        <div class="col-md-12 fa fa-border">
+            <!--<div class="col-md-1">
+                <i class="glyphicon glyphicon-hd-video"></i>
+                <br />
+                <br />
+                <br />
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <div class='input-group date' id='datetimepicker2'>
+                        <input type="date" class="form-control" date-format="yyyy-mm-dd" id="startDate" name="startDate" ng-model="vm.startDate" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <div class='input-group date' id='datetimepicker3'>
+                        <input type="date" class="form-control" date-format="yyyy-mm-dd" id="endDate" name="endDate" ng-model="vm.endDate" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-md-12 container-fluid">
+                <!--<canvas id="myChart"></canvas>-->
+                <div class="row">
+                    <div class="col-xs-6 dc-data-count dc-chart" id="data-count">
+                        <h2>
+                            Salary Exhibition
+                            <small>
+                                <span class="filter-count"></span> selected out of <span class="total-count"></span> records |
+                                <a id="all">Reset All</a>
+                            </small>
+                        </h2>
+                    </div>
+                    <div class="form-group col-xs-2 dc-data-count dc-chart">
+                        <label for="startDate">Start Date</label>
+                        <div class='input-group date' id='datetimepicker2'>
+                            <input type="date" class="form-control" date-format="yyyy-mm-dd" id="startDate" name="startDate" ng-model="vm.startDate" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-2 dc-data-count dc-chart">
+                        <label for="endDate">End Date</label>
+                        <div class='input-group date' id='datetimepicker3'>
+                            <input type="date" class="form-control" date-format="yyyy-mm-dd" id="endDate" name="endDate" ng-model="vm.endDate" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="control-row">
+                    <div class="col-xs-2 pie-chart">
+                        <h4>Year <small><a id="year">reset</a></small></h4>
+                        <div class="dc-chart" id="chart-ring-year"></div>
+                    </div>
+                    <div class="col-xs-2 pie-chart">
+                        <h4>Month <small><a id="month">reset</a></small></h4>
+                        <div class="dc-chart" id="chart-ring-month"></div>
+                    </div>
+                    <div class="col-xs-2 pie-chart">
+                        <h4>Day <small><a id="day">reset</a></small></h4>
+                        <div class="dc-chart" id="chart-row-day"></div>
+                    </div>
+                    <div class="col-xs-6">
+                        <h4>Map Video Intro</h4>
+                        <p> Seriously, This Video is of Rachmaninov's famous unique Cello</p>
+                        <!--<div id="leafletMap"></div>-->
+                    </div>
+                    <!--<div class="col-xs-6">
+                        <h4>Volume Map <small><a id="volume">reset</a></small></h4>
+                        <div class="dc-chart" id="chart-line-volume"></div>
+                    </div>-->
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <div class="dc-chart" id="chart-flow-direction"></div>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <div class="dc-chart" id="chart-community-rating-count"></div>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <div class="dc-chart" id="chart-abv-count"></div>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <div class="dc-chart" id="chart-ibu-count"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12" id="scrollTable">
+                        <table class="table table-bordered table-striped" id="data-table">
+                            <thead>
+                                <tr class="header">
+                                    <th>Transaction Date</th>
+                                    <th>Flow Direction</th>
+                                    <th>Party(from)</th>
+                                    <th>Party(To)</th>
+                                    <th>Amount</th>
+                                    <th>Unit</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--<ul>
+        @foreach (var trip in Model)
+        {
+        <li>@trip.Name (@trip.Created.ToShortDateString())</li>
+
+        }
+    </ul>-->
+
+    <script type="text/javascript">
+        //window.onload = function() {
+        //    alert("123");
+        //    var textTemp = $('#pp').text;
+        //    alert(textTemp);
+        //};
+        //$(document).ready(function () {
+        //    alert("123");
+        //    var textTemp = $('#myChart').get(0).html;
+        //    alert(textTemp);
+        //});
+
+
+
+    </script>
+
+</div>

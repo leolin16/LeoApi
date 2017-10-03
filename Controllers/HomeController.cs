@@ -61,6 +61,11 @@ namespace LeoPortal2.Controllers
             //return View();
         }
 
+        public IActionResult Ptm()
+        {
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Well, When do you plan to marry me, VV?";

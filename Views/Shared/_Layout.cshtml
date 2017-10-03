@@ -2,53 +2,214 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
     <title>@ViewData["Title"] - LeoPortal2</title>
-
+    @RenderSection("Basehref", false)
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="~/lib/semantic/dist/semantic.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    @RenderSection("Styles", false)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">LeoPortal2</a>
+    <div class="row" id="firstContainer">
+        @*<video autoplay loop controls id="myVideo">
+            <source src="~/videos/HE-Sergei Rachmaninov Sonata For Cello And Piano,OP19(Andante) 现场版--音悦Tai.mp4" type="video/mp4">
+            <source src="~/videos/RachSonata320x180.mp4" type="video/mp4">
+        </video>*@
+        <div id="sidebar" class="col-lg-1 col-md-2 col-sm-3 col-xs-4 aniTrans hide-sidebar">
+            @*@await Html.PartialAsync("_LoginPartial")*@
+            @*@if (SignInManager.IsSignedIn(User))*@
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p />
+                <p />
+                <div class="text-center">
+                    <img src="~/img/Leo.JPG" alt="headshot" class="headshot" /><br />
+                </div>
+                <i class="fa fa-align-center"> &nbsp;<span id="username">Hello , @User.Identity.Name</span></i>
+                <p />
+            }
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <p />
+                <br />
+                <br />
+                <br />
+            }
+            <ul id="main-nav" class="nav nav-tabs nav-stacked">
+                <li>
+                    <a asp-controller="Home" asp-action="Index">
+                        <i class="fa fa-home"></i>&nbsp;Home
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="App" asp-action="Codesnippets">
+                        <i class="fa fa-codepen"></i>&nbsp;Code Snippets
+                    </a>
+                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <a href="#explore" class="nav-header collapsed" data-toggle="collapse">
+                            <i class="fa fa-child"></i>&nbsp;Explore
+                            <span class="pull-right glyphicon glyphicon-chevron-toggle"></span>
+                        </a>
+                        <ul id="explore" class="nav nav-list secondmenu collapse in">
+                            <li>
+                                <a asp-controller="App" asp-action="Trips">
+                                    <i class="fa fa-plane"></i>&nbsp;Trips
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="App" asp-action="Favlinks">
+                                    <i class="fa fa-bookmark"></i>&nbsp;Favour Links
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#calculation" class="nav-header collapsed" data-toggle="collapse">
+                            <i class="fa fa-calculator"></i>&nbsp;Calculation
+                            <span class="pull-right glyphicon glyphicon-chevron-toggle"></span>
+                        </a>
+                        <ul id="calculation" class="nav nav-list secondmenu collapse in">
+                            <li>
+                                <a asp-controller="App" asp-action="Cashflows">
+                                    <i class="fa fa-money"></i>&nbsp;Cash Flow
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="App" asp-action="Computers">
+                                    <i class="fa fa-desktop"></i>&nbsp;Computer
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a asp-controller="Auth" asp-action="Logout">
+                            <i class="fa fa-sign-out"></i>&nbsp;Logout
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a asp-controller="App" asp-action="Contact">
+                        <i class="fa fa-mobile-phone"></i>&nbsp;Contact
+                    </a>
+                </li>
+                <li class="active">
+                    <a asp-controller="App" asp-action="About">
+                        <i class="fa fa-fire 2x"></i>&nbsp;About<span class="badge pull-right">1</span>
+                    </a>
+                </li>
+            </ul>
+
+
+
+        </div>
+        <div id="wrapperLeo" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 aniTrans hide-sidebar">
+            <nav id="nav1" class="navbar navbar-fixed-top" role="navigation">
+                <div id="navSide" class="col-lg-1 col-md-2 col-sm-3 col-xs-4"></div>
+                <div id="navWrapper" class="navbar-inverse col-lg-12 col-md-12 col-sm-12 col-xs-12 aniTrans">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <span class="navbar-brand hidden-sm hidden-md hidden-lg">Menu</span>
+                        @*<a id="sidebarToggle" class="item ui primary button push-sidebar"><i class="angle right icon"></i> Side Menu</a>
+                        <a class="item" asp-area="" asp-controller="Home" asp-action="Index">Leo Lin <span class="sr-only">(current)</span></a>
+                        <a class="item" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                        <a class="item" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>*@
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a id="sidebarToggle" class="btn btn-warning">
+                                    <i class="fa fa-angle-right"></i> Side Menu
+                                </a>
+                            </li>
+                            <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Index">Leo Lin <span class="sr-only">(current)</span></a></li>
+                            <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                            <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            @*<li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>*@
+                        </ul>
+                        <form class="navbar-form navbar-right" role="search">
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Search" type="text">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+
+                        @*<div class="right item" role="search">
+                            <div class="ui icon input">
+                                <input placeholder="Search..." type="text">
+                                <i class="search icon" href="#"></i>
+                            </div>
+
+                        </div>*@
+
+                        @await Html.PartialAsync("_LoginPartial")
+
+                    </div>
+                </div>
+            </nav>
+            <div id="main1" class="body-content">@*container container-fluid body-content*@
+            @*<div id="main1" class="col-lg-11 col-md-10 col-sm-9 col-xs-8">*@
+                <div id="main2">
+                    @RenderBody()
+                    @*<p class="hidden-lg">hidden-lg</p>
+                    <p class="hidden-md">hidden-md</p>
+                    <p class="hidden-sm">hidden-sm</p>
+                    <p class="hidden-xs">hidden-xs</p>
+
+                    <p class="visible-lg">visible-lg</p>
+                    <p class="visible-md">visible-md</p>
+                    <p class="visible-sm">visible-sm</p>
+                    <p class="visible-xs">visible-xs</p>*@
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
+            @*<hr />*@
+            <div id="footer" class="container-fluid">
+                @*<hr />*@
+                <footer class="navbar navbar-default navbar-fixed-bottom">
+                    <h4 class="text-center text-info">&copy; 2016 Leo Lin Group Ltd.</h4>
+                </footer>
+
+                @*<div class="ui orange inverted icon bottom fixed menu">
+                    <h4 class="ui middle center aligned celled grid">&copy; 2016 Leo Lin Group Ltd.</h4>
+                </div>*@
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - LeoPortal2</p>
-        </footer>
     </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/semantic/dist/semantic.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
@@ -64,6 +225,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="~/lib/semantic/dist/semantic.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 

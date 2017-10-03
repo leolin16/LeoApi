@@ -1,0 +1,80 @@
+<div>
+    <a href="#/" class="btn btn-sm btn-link"><i class="fa fa-angle-left"></i> Back</a>
+</div>
+<div class="inputPage col-md-3">
+    <h2>{{vm.favlinkName}}</h2>
+    <wait-cursor display-when="vm.isBusy"></wait-cursor>
+    <div class="alert alert-danger" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
+
+    <form id="linkInputForm" novalidate name="newLinkForm" ng-submit="vm.addLink()">
+        <div class="form-group">
+            <label for="titleLevel1">Phase</label>
+            <input type="text" class="form-control" id="titleLevel1" name="titleLevel1" ng-model="vm.newLink.titleLevel1" ng-minlength="2" />
+            <span ng-show="newLinkForm.titleLevel1.$error.minlength" class="text-warning">Phase must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="titleLevel2">Year</label>
+            <input type="text" class="form-control" id="titleLevel2" name="titleLevel2" ng-model="vm.newLink.titleLevel2" ng-minlength="4" />
+            <span ng-show="newLinkForm.titleLevel2.$error.minlength" class="text-warning">Year must be at least four characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="titleLevel3">Month</label>
+            <input type="text" class="form-control" id="titleLevel3" name="titleLevel3" ng-model="vm.newLink.titleLevel3" ng-minlength="2" />
+            <span ng-show="newLinkForm.titleLevel3.$error.minlength" class="text-warning">Month must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="titleLevel4">Day</label>
+            <input type="text" class="form-control" id="titleLevel4" name="titleLevel4" ng-model="vm.newLink.titleLevel4" ng-minlength="2" />
+            <span ng-show="newLinkForm.titleLevel4.$error.minlength" class="text-warning">Day must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="name">Link Name</label>
+            <input type="text" class="form-control" id="name" name="name" ng-model="vm.newLink.name" required ng-minlength="2" />
+            <span ng-show="newLinkForm.name.$error.required" class="text-warning">Name is required.</span>
+            <span ng-show="newLinkForm.name.$error.minlength" class="text-warning">Name must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="url">Link URL</label>
+            <input type="text" class="form-control" id="url" name="url" ng-model="vm.newLink.url" required ng-minlength="2" ng-pattern="/(https?:\/\/)(www)?[A-Za-z0-9.\-@_~]+\.[A-Za-z]{2,}(:[0-9]{2,5})?(\/[A-Za-z0-9\/_\-.~?&=]*)*/" />
+            <span ng-show="newLinkForm.url.$error.required" class="text-warning">URL is required.</span>
+            <span ng-show="newLinkForm.url.$error.minlength" class="text-warning">URL must be at least two characters.</span>
+            <span class="text-danger" ng-show="newLinkForm.url.$error.pattern">Must be in format of http(s).</span>
+        </div>
+        <div class="form-group">
+            <input type="button" name="linkSubmit" id="modifyLink" class="btn btn-danger" value="Modify with {{vm.newLink.name}}" ng-click="vm.editLink()" ng-disabled="newLinkForm.$invalid" />
+            <input type="submit" name="linkSubmit" id="addLink" class="btn btn-success col-md-offset-1" value="Add to {{vm.favlinkName}}" ng-disabled="newLinkForm.$invalid" />
+        </div>
+    </form>
+    <div id="lockedDiv">
+        <table class="table table-responsive table-striped">
+            <tr id="fixedHeaderTr">
+                <th>Pre</th>
+                <th>Name</th>
+                <th>URL</th>
+                <th>Delete</th>
+            </tr>
+            <tr class="formattedFooterTr" ng-repeat="link in vm.links">
+                <td>{{link.titleLevel4}}</td>
+                <td>{{link.name}}</td>
+                <td><a ng-click="vm.showLink(link.name)" class="btn btn-link"><i class="fa fa-link"></i>{{link.url}}</a></td>
+                <td><button class="btn btn-justified btn-warning" ng-click="vm.delLink(link.id)">Del</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="sidePage" class="col-md-9">
+    <h2>The Linked Page: <i class="text-warning fa fa-apple"></i>  <span class="text-success fa fa-arrow-circle-down">{{vm.currentLink.url}}</span></h2>
+    <iframe class="col-md-12 fa fa-border fa-2x" id="framePage" src="{{vm.curUrl}}" scrolling="no" frameborder="0"></iframe>
+
+
+
+    <!--<ul>
+        @foreach (var trip in Model)
+        {
+        <li>@trip.Name (@trip.Created.ToShortDateString())</li>
+
+        }
+    </ul>-->
+
+
+</div>

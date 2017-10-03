@@ -1,0 +1,46 @@
+
+<div class="topPadding col-md-7">
+    <div class="text-danger" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
+    <wait-cursor display-when="vm.isBusy"></wait-cursor>
+
+    <table class="table table-responsive table-striped">
+        <tr ng-repeat="favlink in vm.favlinks">
+            <td>{{ favlink.name}}</td>
+            <td>{{ favlink.created | date:'yyyy-MM-dd hh:mm:ss'}}</td>
+            <td><a ng-href="#/editor/{{favlink.name}}" class="btn btn-sm btn-primary">Head In</a></td>
+        </tr>
+    </table>
+</div>
+<div class="topPadding col-md-3 col-md-offset-1">
+    <form novalidate name="newFavlinkForm" ng-submit="vm.addFavlink()">
+        <div class="form-group">
+            <label for="titleLevel1">Phase</label>
+            <input type="text" class="form-control" id="titleLevel1" name="titleLevel1" ng-model="vm.newFavlink.titlelevel1" ng-minlength="2" />
+            <span ng-show="newFavlinkForm.titleLevel1.$error.minlength" class="text-warning">Phase must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="titleLevel2">Year</label>
+            <input type="text" class="form-control" id="titleLevel2" name="titleLevel2" ng-model="vm.newFavlink.titlelevel2" ng-minlength="4" />
+            <span ng-show="newFavlinkForm.titleLevel2.$error.minlength" class="text-warning">Year must be at least four characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="titleLevel3">Month</label>
+            <input type="text" class="form-control" id="titleLevel3" name="titleLevel3" ng-model="vm.newFavlink.titlelevel3" ng-minlength="2" />
+            <span ng-show="newFavlinkForm.titleLevel3.$error.minlength" class="text-warning">Month must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="titleLevel4">Day</label>
+            <input type="text" class="form-control" id="titleLevel4" name="titleLevel4" ng-model="vm.newFavlink.titlelevel4" ng-minlength="2" />
+            <span ng-show="newFavlinkForm.titleLevel4.$error.minlength" class="text-warning">Day must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <label for="name">Favourite Link Collection Name</label>
+            <input type="text" class="form-control" id="name" name="name" ng-model="vm.newFavlink.name" required ng-minlength="2" />
+            <span ng-show="newFavlinkForm.name.$error.required" class="text-warning">Name is required.</span>
+            <span ng-show="newFavlinkForm.name.$error.minlength" class="text-warning">Name must be at least two characters.</span>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success btn-sm" value="Add" ng-disabled="newFavlinkForm.$invalid" />
+        </div>
+    </form>
+</div>

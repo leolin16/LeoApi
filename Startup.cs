@@ -31,7 +31,7 @@ namespace LeoPortal2
     // Leo Start
         //public static IConfigurationRoot Configuration; //adding static to make it callable to other files, found by Leo
         private IHostingEnvironment _env;
-        private IConfigurationRoot _config;
+        // private IConfigurationRoot _config;
         private void ConfigureSettings(IServiceCollection services)
         {
             var configBuilder = new ConfigurationBuilder()
@@ -193,6 +193,10 @@ namespace LeoPortal2
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
 
         // Leo Start

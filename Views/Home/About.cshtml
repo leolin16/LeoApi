@@ -5,3 +5,14 @@
 <h3>@ViewData["Message"]</h3>
 
 <p>The Story of Yvonne</p>
+
+@section scripts {
+<script src="~/ptm/inline.bundle.js" asp-append-version="true"></script>
+<script src="~/ptm/polyfills.bundle.js" asp-append-version="true"></script>
+<script src="~/ptm/vendor.bundle.js" asp-append-version="true"></script>
+<script src="~/ptm/styles.bundle.js" asp-append-version="true"></script>
+<script src="~/ptm/scripts.bundle.js" asp-append-version="true"></script>
+<script src="~/ptm/main.bundle.js" asp-append-version="true"></script>
+}
+
+<app-root></app-root>

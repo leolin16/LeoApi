@@ -26,10 +26,10 @@ namespace LeoPortal2.Services
         private CoordServiceResult result;
         private JObject results;
         private string url;
-        private IConfigurationRoot _config;
+        private IConfiguration _config;
         private ILogger<CoordService> _logger;
 
-        public CoordService(ILogger<CoordService> logger, IConfigurationRoot config)
+        public CoordService(ILogger<CoordService> logger, IConfiguration config)
         {
             _logger = logger;
             _config = config;
