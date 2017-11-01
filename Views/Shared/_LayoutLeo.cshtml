@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"
+    />
+    <title>@ViewData["Title"] - LeoPortal2</title>
+    @RenderSection("Basehref", false)
+    <environment include="Development">
+        <!-- <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" /> -->
+        <link rel="stylesheet" href="~/lib/semantic/dist/semantic.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <!-- <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" /> -->
+        <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    @RenderSection("Styles", false)
+</head>
+
+<body>
+
+    @RenderSection("LeftSideBar", false)
+
+    <div class="row pusher" id="firstContainer">
+        @RenderSection("LogoSection", false)
+        @RenderSection("HeaderMenu", false)
+        @*
+        <video autoplay loop controls id="myVideo">
+            <source src="~/videos/HE-Sergei Rachmaninov Sonata For Cello And Piano,OP19(Andante) 现场版--音悦Tai.mp4" type="video/mp4">
+            <source src="~/videos/RachSonata320x180.mp4" type="video/mp4">
+        </video>*@
+
+        <div id="wrapperLeo">
+
+            @RenderBody()
+            @RenderSection("FooterSection", false)
+
+        </div>
+    </div>
+    <environment include="Development">
+        <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+        <script src="~/lib/semantic/dist/semantic.js"></script>
+        <script src="~/js/muses.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+        </script>
+        <script src="~/lib/semantic/dist/semantic.min.js"></script>
+        <script src="~/js/muses.js" asp-append-version="true"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>
